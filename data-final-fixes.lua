@@ -374,10 +374,7 @@ local function add_reverse_recipe(item,recipe,newcategory)
 	local ingredients = {}
 	ingredients[1] = result
 	ingredients[2] = result_count
-	local theicon = item.icon
-	if not theicon then
-		theicon = "__base__/graphics/icons/" .. result .. ".png"
-	end
+	
 	-- Assign the category to force a recycling machine based on the number of results
 	if newcategory ~= "recycling-with-fluid" then
 		local recyclesuffix = "1"
@@ -407,9 +404,17 @@ local function add_reverse_recipe(item,recipe,newcategory)
 		-- main_product = "",
 		group = newgroup,
 		subgroup = rec_prefix .. item.subgroup,
-		order = item.order,
-		icon = theicon
+		order = item.order
 	}
+	
+	if item.icon then
+		new_recipe.icon = item.icon
+	elseif item.icons then	
+		new_recipe.icons = item.icons
+	else
+		theicon = "__base__/graphics/icons/" .. result .. ".png"
+	end
+	
 	-- Produce localised "Recycled <item> parts" if there is more than one result
 	-- If there is only one result, the game takes care of the locale
 	if recycle_count > 1 then
